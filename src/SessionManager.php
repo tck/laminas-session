@@ -106,6 +106,14 @@ class SessionManager extends AbstractManager
         if (session_status() === PHP_SESSION_ACTIVE) {
             return true;
         }
+        
+        $oldErrorLevel = error_reporting(0);
+        $sid = defined('SID') ? constant('SID') : false;
+        error_reporting($oldErrorLevel);
+
+        if ($sid !== false && $this->getId()) {
+            return true;
+        }
 
         return false;
     }
